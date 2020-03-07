@@ -6,9 +6,10 @@ This is a simple API for the arowpay.com platform which is an integrated payment
 this is a simple Java wrapper to make it useable from within your Java projects. We have tried to keep it as 
 simple an clean as possible, but however there are some dependencies like slf4j, commons-codec and gson which must be resolved.
 This can either be done via apache-ivy or by hand. 
-#useage
 
-##API Calls
+# Usage
+
+## API Calls
 ````
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,9 +28,9 @@ JsonObject j = api.set("currency", "BTC")
 String address = j.get("msg").getAsString();
 ````
 
-#Validate IPNs
+## Validate IPNs
 
-##IPN Data Structure
+IPN Data Structure
 
 ````
 HTTP Header:
@@ -43,6 +44,7 @@ HTTP Body Content :
 {"txid":"c85d2669ac777574762640c36e66592df946aa90615952797d62c9070cebbeb5","address":"1PJb6kLcZjUeq4fkKJ6ubDnEbx8ELJyRfd","amount":"0.0051","currency":"BTC","time":1581582672,"custom":"yourcustomstrings"}
 ````
 
+Validate IPNs
 ````
 String appkey = "your appkey";
 String appsecret = "your appsecret";
@@ -59,7 +61,4 @@ if(api.validateIPN(appkey,signature,nonce,timestamp,txid,amount,currency)){
 }else{
 	//invalid IPNs 
 }
-
-
-
 ````
