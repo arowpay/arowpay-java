@@ -61,7 +61,4 @@ if(api.validateIPN(appkey,signature,nonce,timestamp,txid,amount,currency)){
 }else{
 	//invalid IPNs 
 }
-
-
-
 ````
