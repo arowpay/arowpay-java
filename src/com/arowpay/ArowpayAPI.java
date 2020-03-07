@@ -136,7 +136,7 @@ public class ArowpayAPI
 			con.setRequestMethod("POST");
 			con.setRequestProperty("User-Agent", "Mozilla/5.0");
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
-			con.setRequestProperty("appkey", $this.appkey);
+			con.setRequestProperty("appkey", this.appkey);
 			con.setRequestProperty("nonce", nonce);
 			con.setRequestProperty("timestamp", timestamp);
 			con.setRequestProperty("signature", signature);
