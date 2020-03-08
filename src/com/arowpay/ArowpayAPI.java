@@ -21,11 +21,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-/**
- * CoinPayments.net API Class - v1.0  
- * (c) 2017 by bytebang.at 
- * Licensed under GPLv3 - http://www.gnu.org/licenses/gpl-3.0.txt
- */
 
 public class ArowpayAPI
 {
