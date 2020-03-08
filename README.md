@@ -25,7 +25,10 @@ ArowpayAPI api  = new ArowpayAPI(appkey, appsecret);
 JsonObject j = api.set("currency", "BTC")
 		          .set("custom","label1")
 		          .call("getCallbackAddress");
-String address = j.get("msg").getAsString();
+String code = j.get("code").getAsString(); 
+if(code.equals("200")){
+	String address = j.get("msg").getAsString();
+}
 ````
 
 ## Validate IPNs

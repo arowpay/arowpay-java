@@ -1,5 +1,13 @@
 package com.arowpay;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
@@ -8,18 +16,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLSession;
 
 
 public class ArowpayAPI
@@ -28,6 +26,11 @@ public class ArowpayAPI
 	private String				appsecret;
 	private Map<String, String>	params;
 	private static Logger		logger	= LoggerFactory.getLogger(ArowpayAPI.class);
+	final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+		public boolean verify(String hostname, SSLSession session) {
+			return true;
+		}
+	};
 
 	/**
 	 * ctor
@@ -110,7 +113,7 @@ public class ArowpayAPI
 	{
 
 		// Copy the current map to
-		Map<String, String> req = new HashMap<>();
+		Map<String, String> req = new HashMap<String, String>();
 		req.putAll(params);
 		params.clear();
 
@@ -127,8 +130,10 @@ public class ArowpayAPI
 			HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
 			// Set the request headers
-
+			con.setDoOutput(true);
+			con.setDoInput(true);
 			con.setRequestMethod("POST");
+			con.setHostnameVerifier(DO_NOT_VERIFY);
 			con.setRequestProperty("User-Agent", "Mozilla/5.0");
 			con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 			con.setRequestProperty("appkey", this.appkey);
@@ -137,7 +142,6 @@ public class ArowpayAPI
 			con.setRequestProperty("signature", signature);
 
 			// Send post request
-			con.setDoOutput(true);
 			DataOutputStream wr = new DataOutputStream(con.getOutputStream());
 			wr.writeBytes(post_data);
 			wr.flush();
@@ -172,8 +176,8 @@ public class ArowpayAPI
 	 * 
 	 * @return the bool result
 	 */
-	public Bool validateIPN(String appkey,String signature,String none,String timestamp,String txid,String amount,String currency){
-		  String toSign = new StringBuilder(this.appsecret).append(nonce).append(timestamp).append(txid).append(amount).append(currency).toString()
+	public Boolean validateIPN(String appkey,String signature,String nonce,String timestamp,String txid,String amount,String currency){
+		  String toSign = this.appsecret + nonce + timestamp + txid + amount + currency;
           String calculateSignature = String.valueOf(DigestUtils.sha1Hex(toSign));
           if(signature.equalsIgnoreCase(calculateSignature) && appkey.equalsIgnoreCase(this.appkey)){
           	return true;
@@ -193,7 +197,6 @@ public class ArowpayAPI
 	{
 
 		private static final long serialVersionUID = -703701416098191297L;
-
 		public ArowpayAPICallException(String message)
 		{
 			super(message);
