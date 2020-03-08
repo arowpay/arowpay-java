@@ -5,7 +5,6 @@ This is a simple API for the arowpay.com platform which is an integrated payment
 
 this is a simple Java wrapper to make it useable from within your Java projects. We have tried to keep it as 
 simple an clean as possible, but however there are some dependencies like slf4j, commons-codec and gson which must be resolved.
-This can either be done via apache-ivy or by hand. 
 
 # Usage
 
